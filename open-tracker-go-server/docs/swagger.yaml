@@ -1,0 +1,335 @@
+basePath: /
+definitions:
+  organization.CreateDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  organization.DTO:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  organization.UpdateDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  user.CreateDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  user.DTO:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  user.UpdateDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Open source track server
+  license:
+    name: GNU 3.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Open Tracker GO Server
+  version: "0.1"
+paths:
+  /organizations:
+    get:
+      consumes:
+      - application/json
+      description: Filter Organizations by query paramenters
+      parameters:
+      - description: Organization name
+        in: query
+        name: name
+        type: string
+      - description: Organization email
+        in: query
+        name: email
+        type: string
+      - description: Organization createdAt start date
+        in: query
+        name: start
+        type: string
+      - description: Organization createdAt end date
+        in: query
+        name: end
+        type: string
+      - description: Organization populate properties
+        in: query
+        name: populate
+        type: string
+      - description: Organization pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: Organization pagination limit
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/organization.DTO'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Filter Organizations
+      tags:
+      - organizations
+    post:
+      consumes:
+      - application/json
+      description: Save an organization by giver form
+      parameters:
+      - description: Add Organization
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/organization.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/organization.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save Organization
+  /organizations/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find one Organization by ID
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organization.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find one an Organization
+      tags:
+      - organizations
+    post:
+      consumes:
+      - application/json
+      description: Update one Organization by ID
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Organization
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/organization.UpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organization.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update one an Organization
+      tags:
+      - organizations
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Filter Users by query paramenters
+      parameters:
+      - description: User name
+        in: query
+        name: name
+        type: string
+      - description: User email
+        in: query
+        name: email
+        type: string
+      - description: User createdAt start date
+        in: query
+        name: start
+        type: string
+      - description: User createdAt end date
+        in: query
+        name: end
+        type: string
+      - description: User populate properties
+        in: query
+        name: populate
+        type: string
+      - description: User pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: User pagination limit
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.DTO'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Filter Users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Save a user by giver form
+      parameters:
+      - description: Add User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save User
+      tags:
+      - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find one User by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find one an User
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Update one User by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update one an User
+      tags:
+      - users
+swagger: "2.0"
