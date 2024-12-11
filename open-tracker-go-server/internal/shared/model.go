@@ -30,6 +30,4 @@ type OrganizationRefModel struct {
 	Email     string `gorm:"uniqueIndex"`
 }
 
-func (OrganizationRefModel) TableName() string {
-	return "users"
-}
+func (OrganizationRefModel) TableName() string { return "organizations" }

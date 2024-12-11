@@ -2,22 +2,21 @@ package user
 
 import (
 	"github.com/google/uuid"
-	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/shared"
 	"gorm.io/gorm"
 	"time"
 )
 
 type Model struct {
 	gorm.Model
-	ID             uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
-	DeletedAt      gorm.DeletedAt `gorm:"index"`
-	Name           string
-	Email          string `gorm:"uniqueIndex"`
-	Password       string
-	OrganizationID uuid.UUID                   `gorm:"type:uuid;not null;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Organization   shared.OrganizationRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
+	ID        uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+	Name      string
+	Email     string `gorm:"uniqueIndex"`
+	Password  string
+	//OrganizationID uuid.UUID                   `gorm:"type:uuid;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	//Organization   shared.OrganizationRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
 }
 
 type DTO struct {

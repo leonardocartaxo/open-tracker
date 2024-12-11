@@ -2,7 +2,6 @@ package organization
 
 import (
 	"github.com/google/uuid"
-	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/shared"
 	"gorm.io/gorm"
 	"time"
 )
@@ -14,8 +13,8 @@ type Model struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Name      string
-	Email     string                `gorm:"uniqueIndex"`
-	Users     []shared.UserRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
+	Email     string `gorm:"uniqueIndex"`
+	//Users     []shared.UserRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
 }
 
 type DTO struct {

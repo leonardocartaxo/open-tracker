@@ -53,6 +53,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		err = db.AutoMigrate(&organization.Model{})
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	var ginMode string
