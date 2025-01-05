@@ -12,11 +12,9 @@ type Model struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-	Name      string
-	Email     string `gorm:"uniqueIndex"`
+	Name      string         `gorm:"not null"`
+	Email     string         `gorm:"uniqueIndex;not null"`
 	Password  string
-	//OrganizationID uuid.UUID                   `gorm:"type:uuid;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	//Organization   shared.OrganizationRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
 }
 
 type DTO struct {
@@ -37,10 +35,10 @@ type UpdateDTO struct {
 }
 
 type FindOptions struct {
-	Name  string
-	Email string
 	Start string
 	End   string
+	Name  string
+	Email string
 }
 
 type Models []*Model
@@ -52,15 +50,20 @@ func (Model) TableName() string {
 func (m Model) ToDTO() DTO {
 	return DTO{
 		ID:        m.ID.String(),
-		Name:      m.Name,
-		Email:     m.Email,
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdatedAt,
+		Name:      m.Name,
+		Email:     m.Email,
 	}
 }
 
 func (m *DTO) ToModel() Model {
-	return Model{Name: m.Name, Email: m.Email, CreatedAt: m.CreatedAt, UpdatedAt: m.UpdatedAt}
+	return Model{
+		CreatedAt: m.CreatedAt,
+		UpdatedAt: m.UpdatedAt,
+		Name:      m.Name,
+		Email:     m.Email,
+	}
 }
 
 func (m *Models) ToDTO() []DTO {

@@ -6,7 +6,10 @@ import (
 	_ "github.com/leonardocartaxo/open-tracker/open-tracker-go-server/docs"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/organization"
+	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/tracker"
+	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/tracker_locations"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/user"
+	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/user_organizations"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/utils/logger"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -57,6 +60,18 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		err = db.AutoMigrate(&user_organizations.Model{})
+		if err != nil {
+			panic(err)
+		}
+		err = db.AutoMigrate(&tracker.Model{})
+		if err != nil {
+			panic(err)
+		}
+		err = db.AutoMigrate(&tracker_locations.Model{})
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	var ginMode string
@@ -77,6 +92,12 @@ func main() {
 	user.NewRouter(db, users, l).Route()
 	organizations := r.Group("/organizations")
 	organization.NewRouter(db, organizations, l).Route()
+	userOrganizations := r.Group("/user_organizations")
+	user_organizations.NewRouter(db, userOrganizations, l).Route()
+	trackers := r.Group("/trackers")
+	tracker.NewRouter(db, trackers, l).Route()
+	trackerLocations := r.Group("/tracker_locations")
+	tracker_locations.NewRouter(db, trackerLocations, l).Route()
 
 	err = r.Run(addr)
 	if err != nil {

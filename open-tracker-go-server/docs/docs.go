@@ -107,6 +107,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "organizations"
+                ],
                 "summary": "Save Organization",
                 "parameters": [
                     {
@@ -221,9 +224,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
+        "/tracker_locations": {
             "get": {
-                "description": "Filter Users by query paramenters",
+                "description": "Filter TrackerLocations by query paramenters",
                 "consumes": [
                     "application/json"
                 ],
@@ -231,22 +234,473 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "trackerLocations"
                 ],
-                "summary": "Filter Users",
+                "summary": "Filter TrackerLocations",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User name",
-                        "name": "name",
+                        "description": "TrackerLocation createdAt start date",
+                        "name": "start",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "TrackerLocation createdAt end date",
+                        "name": "end",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "TrackerLocation trackerId",
+                        "name": "trackerId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "TrackerLocation pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "TrackerLocation pagination limit",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tracker_locations.DTO"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Save a trackerLocation by giver form",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackerLocations"
+                ],
+                "summary": "Save TrackerLocation",
+                "parameters": [
+                    {
+                        "description": "Add TrackerLocation",
+                        "name": "trackerLocation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tracker_locations.CreateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/tracker_locations.DTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/tracker_locations/{id}": {
+            "get": {
+                "description": "Find one TrackerLocation by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackerLocations"
+                ],
+                "summary": "Find one an TrackerLocation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "TrackerLocation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tracker_locations.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Update one TrackerLocation by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackerLocations"
+                ],
+                "summary": "Update one an TrackerLocation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "TrackerLocation ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update TrackerLocation",
+                        "name": "trackerLocation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tracker_locations.UpdateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tracker_locations.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/trackers": {
+            "get": {
+                "description": "Filter Trackers by query paramenters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackers"
+                ],
+                "summary": "Filter Trackers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tracker createdAt start date",
+                        "name": "start",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "User email",
-                        "name": "email",
+                        "description": "Tracker createdAt end date",
+                        "name": "end",
                         "in": "query"
                     },
+                    {
+                        "type": "string",
+                        "description": "Tracker populate properties",
+                        "name": "populate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tracker pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tracker pagination limit",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tracker name",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tracker.DTO"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Save a tracker by giver form",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackers"
+                ],
+                "summary": "Save Tracker",
+                "parameters": [
+                    {
+                        "description": "Add Tracker",
+                        "name": "tracker",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tracker.CreateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/tracker.DTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/trackers/{id}": {
+            "get": {
+                "description": "Find one Tracker by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackers"
+                ],
+                "summary": "Find one an Tracker",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tracker ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tracker.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "description": "Update one Tracker by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trackers"
+                ],
+                "summary": "Update one an Tracker",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tracker ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Tracker",
+                        "name": "tracker",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tracker.UpdateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/tracker.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/userOrganizations": {
+            "post": {
+                "description": "Save a UserOrganization by giver form",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "userOrganizations"
+                ],
+                "summary": "Save UserOrganization",
+                "parameters": [
+                    {
+                        "description": "Add User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_organizations.CreateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/user_organizations.DTO"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/user_organization/{id}": {
+            "get": {
+                "description": "Delete one UserOrganization by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "userOrganizations"
+                ],
+                "summary": "Delete one an UserOrganization",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UserOrganizatio ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user_organizations.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Filter UserOrganizations by query paramenters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "userOrganizations"
+                ],
+                "summary": "Filter UserOrganizations",
+                "parameters": [
                     {
                         "type": "string",
                         "description": "User createdAt start date",
@@ -276,6 +730,18 @@ const docTemplate = `{
                         "description": "User pagination limit",
                         "name": "offset",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserOrganization userId",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UserOrganization organizationId",
+                        "name": "organizationId",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -284,7 +750,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/user.DTO"
+                                "$ref": "#/definitions/user_organizations.DTO"
                             }
                         }
                     },
@@ -465,6 +931,105 @@ const docTemplate = `{
                 }
             }
         },
+        "tracker.CreateDTO": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                }
+            }
+        },
+        "tracker.DTO": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/organization.DTO"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "tracker.UpdateDTO": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                }
+            }
+        },
+        "tracker_locations.CreateDTO": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "trackerId": {
+                    "type": "string"
+                }
+            }
+        },
+        "tracker_locations.DTO": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "tracker": {
+                    "$ref": "#/definitions/tracker.DTO"
+                },
+                "trackerId": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "tracker_locations.UpdateDTO": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "trackerId": {
+                    "type": "string"
+                }
+            }
+        },
         "user.CreateDTO": {
             "type": "object",
             "properties": {
@@ -503,6 +1068,43 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_organizations.CreateDTO": {
+            "type": "object",
+            "properties": {
+                "organizationId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_organizations.DTO": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/organization.DTO"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/user.DTO"
+                },
+                "userId": {
                     "type": "string"
                 }
             }

@@ -12,8 +12,9 @@ type Model struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-	Name      string
-	Email     string `gorm:"uniqueIndex"`
+	Name      string         `gorm:"not null"`
+	Email     string         `gorm:"uniqueIndex;not null"`
+	//Users     []*shared.UserRefModel `gorm:"many2many:user_organizations;"`
 	//Users     []shared.UserRefModel `gorm:"foreignKey:OrganizationID;references:ID"`
 }
 

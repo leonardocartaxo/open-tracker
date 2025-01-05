@@ -27,6 +27,70 @@ definitions:
       name:
         type: string
     type: object
+  tracker.CreateDTO:
+    properties:
+      name:
+        type: string
+      organizationId:
+        type: string
+    type: object
+  tracker.DTO:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      organization:
+        $ref: '#/definitions/organization.DTO'
+      organizationId:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  tracker.UpdateDTO:
+    properties:
+      name:
+        type: string
+      organizationId:
+        type: string
+    type: object
+  tracker_locations.CreateDTO:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+      trackerId:
+        type: string
+    type: object
+  tracker_locations.DTO:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      tracker:
+        $ref: '#/definitions/tracker.DTO'
+      trackerId:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  tracker_locations.UpdateDTO:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+      trackerId:
+        type: string
+    type: object
   user.CreateDTO:
     properties:
       email:
@@ -52,6 +116,30 @@ definitions:
       email:
         type: string
       name:
+        type: string
+    type: object
+  user_organizations.CreateDTO:
+    properties:
+      organizationId:
+        type: string
+      userId:
+        type: string
+    type: object
+  user_organizations.DTO:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      organization:
+        $ref: '#/definitions/organization.DTO'
+      organizationId:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/user.DTO'
+      userId:
         type: string
     type: object
 externalDocs:
@@ -141,6 +229,8 @@ paths:
         "500":
           description: Internal Server Error
       summary: Save Organization
+      tags:
+      - organizations
   /organizations/{id}:
     get:
       consumes:
@@ -200,20 +290,318 @@ paths:
       summary: Update one an Organization
       tags:
       - organizations
+  /tracker_locations:
+    get:
+      consumes:
+      - application/json
+      description: Filter TrackerLocations by query paramenters
+      parameters:
+      - description: TrackerLocation createdAt start date
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: TrackerLocation createdAt end date
+        in: query
+        name: end
+        required: true
+        type: string
+      - description: TrackerLocation trackerId
+        in: query
+        name: trackerId
+        required: true
+        type: number
+      - description: TrackerLocation pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: TrackerLocation pagination limit
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tracker_locations.DTO'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Filter TrackerLocations
+      tags:
+      - trackerLocations
+    post:
+      consumes:
+      - application/json
+      description: Save a trackerLocation by giver form
+      parameters:
+      - description: Add TrackerLocation
+        in: body
+        name: trackerLocation
+        required: true
+        schema:
+          $ref: '#/definitions/tracker_locations.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/tracker_locations.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save TrackerLocation
+      tags:
+      - trackerLocations
+  /tracker_locations/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find one TrackerLocation by ID
+      parameters:
+      - description: TrackerLocation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tracker_locations.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find one an TrackerLocation
+      tags:
+      - trackerLocations
+    post:
+      consumes:
+      - application/json
+      description: Update one TrackerLocation by ID
+      parameters:
+      - description: TrackerLocation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update TrackerLocation
+        in: body
+        name: trackerLocation
+        required: true
+        schema:
+          $ref: '#/definitions/tracker_locations.UpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tracker_locations.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update one an TrackerLocation
+      tags:
+      - trackerLocations
+  /trackers:
+    get:
+      consumes:
+      - application/json
+      description: Filter Trackers by query paramenters
+      parameters:
+      - description: Tracker createdAt start date
+        in: query
+        name: start
+        type: string
+      - description: Tracker createdAt end date
+        in: query
+        name: end
+        type: string
+      - description: Tracker populate properties
+        in: query
+        name: populate
+        type: string
+      - description: Tracker pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: Tracker pagination limit
+        in: query
+        name: offset
+        type: integer
+      - description: Tracker name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/tracker.DTO'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Filter Trackers
+      tags:
+      - trackers
+    post:
+      consumes:
+      - application/json
+      description: Save a tracker by giver form
+      parameters:
+      - description: Add Tracker
+        in: body
+        name: tracker
+        required: true
+        schema:
+          $ref: '#/definitions/tracker.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/tracker.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save Tracker
+      tags:
+      - trackers
+  /trackers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find one Tracker by ID
+      parameters:
+      - description: Tracker ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tracker.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find one an Tracker
+      tags:
+      - trackers
+    post:
+      consumes:
+      - application/json
+      description: Update one Tracker by ID
+      parameters:
+      - description: Tracker ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Tracker
+        in: body
+        name: tracker
+        required: true
+        schema:
+          $ref: '#/definitions/tracker.UpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/tracker.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update one an Tracker
+      tags:
+      - trackers
+  /user_organization/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Delete one UserOrganization by ID
+      parameters:
+      - description: UserOrganizatio ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_organizations.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Delete one an UserOrganization
+      tags:
+      - userOrganizations
+  /userOrganizations:
+    post:
+      consumes:
+      - application/json
+      description: Save a UserOrganization by giver form
+      parameters:
+      - description: Add User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_organizations.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user_organizations.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save UserOrganization
+      tags:
+      - userOrganizations
   /users:
     get:
       consumes:
       - application/json
-      description: Filter Users by query paramenters
+      description: Filter UserOrganizations by query paramenters
       parameters:
-      - description: User name
-        in: query
-        name: name
-        type: string
-      - description: User email
-        in: query
-        name: email
-        type: string
       - description: User createdAt start date
         in: query
         name: start
@@ -234,6 +622,14 @@ paths:
         in: query
         name: offset
         type: integer
+      - description: UserOrganization userId
+        in: query
+        name: userId
+        type: string
+      - description: UserOrganization organizationId
+        in: query
+        name: organizationId
+        type: string
       produces:
       - application/json
       responses:
@@ -241,15 +637,15 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/user.DTO'
+              $ref: '#/definitions/user_organizations.DTO'
             type: array
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
-      summary: Filter Users
+      summary: Filter UserOrganizations
       tags:
-      - users
+      - userOrganizations
     post:
       consumes:
       - application/json
