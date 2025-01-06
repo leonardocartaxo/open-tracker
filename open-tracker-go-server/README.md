@@ -33,6 +33,7 @@ docker-compose up
 
 ## TODO
 * authentication
+* fix migrations
 * unit tests
 * e2e test
 * fix api response for duplicated items on DB
