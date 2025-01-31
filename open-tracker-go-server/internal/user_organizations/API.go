@@ -64,7 +64,7 @@ func (a *API) Create(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
-// @Router       /user_organization/{id} [get]
+// @Router       /userOrganizations/{id} [get]
 func (a *API) DeleteById(c *gin.Context) {
 	id := c.Param("id")
 	user, err := a.service.Delete(id)
@@ -91,7 +91,7 @@ func (a *API) DeleteById(c *gin.Context) {
 // @Success      200  {object}  []DTO
 // @Failure      400
 // @Failure      500
-// @Router       /users [get]
+// @Router       /userOrganizations [get]
 func (a *API) Find(c *gin.Context) {
 	start := c.Query("start")
 	end := c.Query("end")

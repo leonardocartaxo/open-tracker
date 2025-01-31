@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  auth.Signing:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   organization.CreateDTO:
     properties:
       email:
@@ -97,6 +104,8 @@ definitions:
         type: string
       name:
         type: string
+      password:
+        type: string
     type: object
   user.DTO:
     properties:
@@ -116,6 +125,8 @@ definitions:
       email:
         type: string
       name:
+        type: string
+      password:
         type: string
     type: object
   user_organizations.CreateDTO:
@@ -158,6 +169,56 @@ info:
   title: Open Tracker GO Server
   version: "0.1"
 paths:
+  /auth/signing:
+    post:
+      consumes:
+      - application/json
+      description: Signing a user by giver form
+      parameters:
+      - description: Signing User
+        in: body
+        name: signing
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Signing'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Signing
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Signup a user by giver form
+      parameters:
+      - description: Add User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Signup User
+      tags:
+      - auth
   /organizations:
     get:
       consumes:
@@ -545,58 +606,7 @@ paths:
       summary: Update one an Tracker
       tags:
       - trackers
-  /user_organization/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Delete one UserOrganization by ID
-      parameters:
-      - description: UserOrganizatio ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user_organizations.DTO'
-        "400":
-          description: Bad Request
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-      summary: Delete one an UserOrganization
-      tags:
-      - userOrganizations
   /userOrganizations:
-    post:
-      consumes:
-      - application/json
-      description: Save a UserOrganization by giver form
-      parameters:
-      - description: Add User
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/user_organizations.CreateDTO'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/user_organizations.DTO'
-        "500":
-          description: Internal Server Error
-      summary: Save UserOrganization
-      tags:
-      - userOrganizations
-  /users:
     get:
       consumes:
       - application/json
@@ -646,6 +656,106 @@ paths:
       summary: Filter UserOrganizations
       tags:
       - userOrganizations
+    post:
+      consumes:
+      - application/json
+      description: Save a UserOrganization by giver form
+      parameters:
+      - description: Add User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user_organizations.CreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user_organizations.DTO'
+        "500":
+          description: Internal Server Error
+      summary: Save UserOrganization
+      tags:
+      - userOrganizations
+  /userOrganizations/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Delete one UserOrganization by ID
+      parameters:
+      - description: UserOrganizatio ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_organizations.DTO'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Delete one an UserOrganization
+      tags:
+      - userOrganizations
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Filter Users by query paramenters
+      parameters:
+      - description: User createdAt start date
+        in: query
+        name: start
+        type: string
+      - description: User createdAt end date
+        in: query
+        name: end
+        type: string
+      - description: User populate properties
+        in: query
+        name: populate
+        type: string
+      - description: User pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: User pagination limit
+        in: query
+        name: offset
+        type: integer
+      - description: User name
+        in: query
+        name: name
+        type: string
+      - description: User email
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.DTO'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Filter Users
+      tags:
+      - users
     post:
       consumes:
       - application/json

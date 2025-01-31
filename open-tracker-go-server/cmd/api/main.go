@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/leonardocartaxo/open-tracker/open-tracker-go-server/docs"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal"
+	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/auth"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/organization"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/tracker"
 	"github.com/leonardocartaxo/open-tracker/open-tracker-go-server/internal/tracker_locations"
@@ -90,6 +91,8 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	users := r.Group("/users")
 	user.NewRouter(db, users, l).Route()
+	auths := r.Group("/auth")
+	auth.NewRouter(db, auths, l).Route()
 	organizations := r.Group("/organizations")
 	organization.NewRouter(db, organizations, l).Route()
 	userOrganizations := r.Group("/user_organizations")

@@ -23,11 +23,13 @@ type DTO struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
+	Password  string    `json:"-"`
 }
 
 type CreateDTO struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type UpdateDTO struct {
@@ -54,6 +56,7 @@ func (m Model) ToDTO() DTO {
 		UpdatedAt: m.UpdatedAt,
 		Name:      m.Name,
 		Email:     m.Email,
+		Password:  m.Password,
 	}
 }
 
@@ -63,6 +66,7 @@ func (m *DTO) ToModel() Model {
 		UpdatedAt: m.UpdatedAt,
 		Name:      m.Name,
 		Email:     m.Email,
+		Password:  m.Password,
 	}
 }
 
