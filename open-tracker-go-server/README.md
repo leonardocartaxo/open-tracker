@@ -35,6 +35,7 @@ docker-compose up
 * authentication
 * fix migrations
 * handle api errors
+* review all DTOs and swagger docs
 * unit tests
 * e2e test
 * fix api response for duplicated items on DB

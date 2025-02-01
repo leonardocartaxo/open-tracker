@@ -1,11 +1,44 @@
 basePath: /
 definitions:
+  auth.SignedUser:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      token:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   auth.Signing:
     properties:
       email:
         type: string
       password:
+        minLength: 6
         type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.Signup:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
     type: object
   organization.CreateDTO:
     properties:
@@ -105,7 +138,12 @@ definitions:
       name:
         type: string
       password:
+        minLength: 6
         type: string
+    required:
+    - email
+    - name
+    - password
     type: object
   user.DTO:
     properties:
@@ -127,7 +165,12 @@ definitions:
       name:
         type: string
       password:
+        minLength: 6
         type: string
+    required:
+    - email
+    - name
+    - password
     type: object
   user_organizations.CreateDTO:
     properties:
@@ -187,7 +230,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.DTO'
+            $ref: '#/definitions/auth.SignedUser'
         "400":
           description: Bad Request
         "500":
@@ -206,7 +249,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user.CreateDTO'
+          $ref: '#/definitions/auth.Signup'
       produces:
       - application/json
       responses:

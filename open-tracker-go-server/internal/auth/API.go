@@ -49,18 +49,18 @@ func (a *API) Signing(c *gin.Context) {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param		 user	body	user.CreateDTO	true	"Add User"
+// @Param		 user	body	Signup	true	"Add User"
 // @Success      201  {object}  user.DTO
 // @Failure      500
 // @Router       /auth/signup [post]
 func (a *API) Signup(c *gin.Context) {
-	createDTO := &user.CreateDTO{}
+	createDTO := &Signup{}
 	err := c.ShouldBindJSON(createDTO)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	newUser, err := a.service.Signup(createDTO)
+	newUser, err := a.service.Signup((*user.CreateDTO)(createDTO))
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 		return
