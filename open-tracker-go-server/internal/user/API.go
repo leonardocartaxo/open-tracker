@@ -27,6 +27,7 @@ func NewApi(service *Service, l *slog.Logger) *API {
 // @Param		 user	body	CreateDTO	true	"Add User"
 // @Success      201  {object}  DTO
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /users [post]
 func (a *API) Create(c *gin.Context) {
 	createDTO := &CreateDTO{}
@@ -42,6 +43,27 @@ func (a *API) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, newUser)
 }
 
+// GetMe godoc
+// @Summary      Get the user by the provided token
+// @Description  Returns the user by the provided token.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  DTO
+// @Failure      400
+// @Failure      500
+// @Security     BearerAuth
+// @Router       /users/me [get]
+func (a *API) GetMe(c *gin.Context) {
+	user, err := shared.GetUserFromGinContext(c)
+	if err != nil {
+		a.l.Error(err.Error())
+		c.Status(http.StatusInternalServerError)
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
 // FindOneUser godoc
 // @Summary      Find one an User
 // @Description  Find one User by ID
@@ -53,6 +75,7 @@ func (a *API) Create(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /users/{id} [get]
 func (a *API) FindById(c *gin.Context) {
 	id := c.Param("id")
@@ -76,6 +99,7 @@ func (a *API) FindById(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /users/{id} [post]
 func (a *API) UpdateById(c *gin.Context) {
 	id := c.Param("id")
@@ -107,6 +131,7 @@ func (a *API) UpdateById(c *gin.Context) {
 // @Success      200  {object}  []DTO
 // @Failure      400
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /users [get]
 func (a *API) Find(c *gin.Context) {
 	start := c.Query("start")

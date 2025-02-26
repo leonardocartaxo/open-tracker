@@ -103,6 +103,11 @@ const docTemplate = `{
         },
         "/organizations": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter Organizations by query paramenters",
                 "consumes": [
                     "application/json"
@@ -177,6 +182,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save an organization by giver form",
                 "consumes": [
                     "application/json"
@@ -214,6 +224,11 @@ const docTemplate = `{
         },
         "/organizations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Find one Organization by ID",
                 "consumes": [
                     "application/json"
@@ -253,6 +268,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update one Organization by ID",
                 "consumes": [
                     "application/json"
@@ -303,6 +323,11 @@ const docTemplate = `{
         },
         "/tracker_locations": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter TrackerLocations by query paramenters",
                 "consumes": [
                     "application/json"
@@ -368,6 +393,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save a trackerLocation by giver form",
                 "consumes": [
                     "application/json"
@@ -405,6 +435,11 @@ const docTemplate = `{
         },
         "/tracker_locations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Find one TrackerLocation by ID",
                 "consumes": [
                     "application/json"
@@ -444,6 +479,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update one TrackerLocation by ID",
                 "consumes": [
                     "application/json"
@@ -494,6 +534,11 @@ const docTemplate = `{
         },
         "/trackers": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter Trackers by query paramenters",
                 "consumes": [
                     "application/json"
@@ -562,6 +607,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save a tracker by giver form",
                 "consumes": [
                     "application/json"
@@ -599,6 +649,11 @@ const docTemplate = `{
         },
         "/trackers/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Find one Tracker by ID",
                 "consumes": [
                     "application/json"
@@ -638,6 +693,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update one Tracker by ID",
                 "consumes": [
                     "application/json"
@@ -688,6 +748,11 @@ const docTemplate = `{
         },
         "/userOrganizations": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter UserOrganizations by query paramenters",
                 "consumes": [
                     "application/json"
@@ -762,6 +827,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save a UserOrganization by giver form",
                 "consumes": [
                     "application/json"
@@ -799,6 +869,11 @@ const docTemplate = `{
         },
         "/userOrganizations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete one UserOrganization by ID",
                 "consumes": [
                     "application/json"
@@ -840,6 +915,11 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Filter Users by query paramenters",
                 "consumes": [
                     "application/json"
@@ -914,6 +994,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save a user by giver form",
                 "consumes": [
                     "application/json"
@@ -949,8 +1034,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Returns the user by the provided token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get the user by the provided token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.DTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Find one User by ID",
                 "consumes": [
                     "application/json"
@@ -990,6 +1114,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update one User by ID",
                 "consumes": [
                     "application/json"
@@ -1071,11 +1200,13 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test@test.com"
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "123456"
                 }
             }
         },
@@ -1088,14 +1219,17 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "test@test.com"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Test"
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "123456"
                 }
             }
         },
@@ -1336,6 +1470,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     },
     "externalDocs": {

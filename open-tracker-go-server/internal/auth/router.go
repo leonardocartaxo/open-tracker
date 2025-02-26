@@ -9,13 +9,15 @@ import (
 )
 
 type Router struct {
-	db *gorm.DB
-	rg *gin.RouterGroup
-	l  *slog.Logger
+	db          *gorm.DB
+	rg          *gin.RouterGroup
+	l           *slog.Logger
+	jwtSecret   string
+	AuthService Service
 }
 
-func NewRouter(db *gorm.DB, rg *gin.RouterGroup, l *slog.Logger) *Router {
-	return &Router{db: db, rg: rg, l: l}
+func NewRouter(db *gorm.DB, rg *gin.RouterGroup, l *slog.Logger, jwtSecret string) *Router {
+	return &Router{db: db, rg: rg, l: l, jwtSecret: jwtSecret}
 }
 
 func (r *Router) Route() {
@@ -32,8 +34,8 @@ func (r *Router) Route() {
 			},
 		},
 	}
-	authService := Service{UserService: userService}
-	api := NewApi(&authService, r.l)
+	r.AuthService = Service{UserService: userService, JwtSecret: r.jwtSecret}
+	api := NewApi(&r.AuthService, r.l)
 
 	r.rg.POST("/signup", api.Signup)
 	r.rg.POST("/signing", api.Signing)

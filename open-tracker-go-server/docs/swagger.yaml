@@ -18,8 +18,10 @@ definitions:
   auth.Signing:
     properties:
       email:
+        example: test@test.com
         type: string
       password:
+        example: "123456"
         minLength: 6
         type: string
     required:
@@ -29,10 +31,13 @@ definitions:
   auth.Signup:
     properties:
       email:
+        example: test@test.com
         type: string
       name:
+        example: Test
         type: string
       password:
+        example: "123456"
         minLength: 6
         type: string
     required:
@@ -309,6 +314,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Filter Organizations
       tags:
       - organizations
@@ -332,6 +339,8 @@ paths:
             $ref: '#/definitions/organization.DTO'
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Save Organization
       tags:
       - organizations
@@ -359,6 +368,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Find one an Organization
       tags:
       - organizations
@@ -391,6 +402,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Update one an Organization
       tags:
       - organizations
@@ -436,6 +449,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Filter TrackerLocations
       tags:
       - trackerLocations
@@ -459,6 +474,8 @@ paths:
             $ref: '#/definitions/tracker_locations.DTO'
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Save TrackerLocation
       tags:
       - trackerLocations
@@ -486,6 +503,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Find one an TrackerLocation
       tags:
       - trackerLocations
@@ -518,6 +537,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Update one an TrackerLocation
       tags:
       - trackerLocations
@@ -564,6 +585,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Filter Trackers
       tags:
       - trackers
@@ -587,6 +610,8 @@ paths:
             $ref: '#/definitions/tracker.DTO'
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Save Tracker
       tags:
       - trackers
@@ -614,6 +639,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Find one an Tracker
       tags:
       - trackers
@@ -646,6 +673,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Update one an Tracker
       tags:
       - trackers
@@ -696,6 +725,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Filter UserOrganizations
       tags:
       - userOrganizations
@@ -719,6 +750,8 @@ paths:
             $ref: '#/definitions/user_organizations.DTO'
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Save UserOrganization
       tags:
       - userOrganizations
@@ -746,6 +779,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Delete one an UserOrganization
       tags:
       - userOrganizations
@@ -796,6 +831,8 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Filter Users
       tags:
       - users
@@ -819,6 +856,8 @@ paths:
             $ref: '#/definitions/user.DTO'
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Save User
       tags:
       - users
@@ -846,6 +885,8 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Find one an User
       tags:
       - users
@@ -878,7 +919,35 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       summary: Update one an User
       tags:
       - users
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      description: Returns the user by the provided token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DTO'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Get the user by the provided token
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

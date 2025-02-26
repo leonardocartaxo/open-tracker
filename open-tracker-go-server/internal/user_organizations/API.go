@@ -27,6 +27,7 @@ func NewApi(service *Service, l *slog.Logger) *API {
 // @Param		 user	body	CreateDTO	true	"Add User"
 // @Success      201  {object}  DTO
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /userOrganizations [post]
 func (a *API) Create(c *gin.Context) {
 	createDTO := &CreateDTO{}
@@ -64,6 +65,7 @@ func (a *API) Create(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /userOrganizations/{id} [get]
 func (a *API) DeleteById(c *gin.Context) {
 	id := c.Param("id")
@@ -91,6 +93,7 @@ func (a *API) DeleteById(c *gin.Context) {
 // @Success      200  {object}  []DTO
 // @Failure      400
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /userOrganizations [get]
 func (a *API) Find(c *gin.Context) {
 	start := c.Query("start")

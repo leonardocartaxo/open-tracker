@@ -27,6 +27,7 @@ func NewApi(service *Service, l *slog.Logger) *API {
 // @Param		 tracker	body	CreateDTO	true	"Add Tracker"
 // @Success      201  {object}  DTO
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /trackers [post]
 func (a *API) Create(c *gin.Context) {
 	createDTO := &CreateDTO{}
@@ -53,6 +54,7 @@ func (a *API) Create(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /trackers/{id} [get]
 func (a *API) FindById(c *gin.Context) {
 	id := c.Param("id")
@@ -76,6 +78,7 @@ func (a *API) FindById(c *gin.Context) {
 // @Failure      400
 // @Failure      404
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /trackers/{id} [post]
 func (a *API) UpdateById(c *gin.Context) {
 	id := c.Param("id")
@@ -106,6 +109,7 @@ func (a *API) UpdateById(c *gin.Context) {
 // @Success      200  {object}  []DTO
 // @Failure      400
 // @Failure      500
+// @Security     BearerAuth
 // @Router       /trackers [get]
 func (a *API) Find(c *gin.Context) {
 	start := c.Query("start")

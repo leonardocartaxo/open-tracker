@@ -15,6 +15,7 @@ type Model struct {
 	Name      string         `gorm:"not null"`
 	Email     string         `gorm:"uniqueIndex;not null"`
 	Password  string
+	Token     string
 }
 
 type DTO struct {

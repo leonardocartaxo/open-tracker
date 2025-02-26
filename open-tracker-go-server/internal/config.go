@@ -24,9 +24,10 @@ type DBConfig struct {
 }
 
 type Config struct {
-	LogLevel int `env:"LOG_LEVEL"`
-	Server   ServerConfig
-	DB       DBConfig
+	LogLevel  int    `env:"LOG_LEVEL"`
+	JwtSecret string `env:"JWT_SECRET"`
+	Server    ServerConfig
+	DB        DBConfig
 }
 
 func NewConfig() *Config {

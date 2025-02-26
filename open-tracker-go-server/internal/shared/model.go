@@ -1,10 +1,23 @@
 package shared
 
 import (
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"time"
 )
+
+const ClaimsKey = "claims"
+
+// Claims struct - this defines the structure of the JWT payload
+type Claims struct {
+	ID        string    `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	jwt.RegisteredClaims
+}
 
 type UserRefModel struct {
 	gorm.Model
@@ -14,6 +27,14 @@ type UserRefModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	Name      string
 	Email     string `gorm:"uniqueIndex"`
+}
+
+type UserRefDTO struct {
+	ID        string    `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
 }
 
 func (UserRefModel) TableName() string {

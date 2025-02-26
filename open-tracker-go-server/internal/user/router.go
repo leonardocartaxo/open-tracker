@@ -33,6 +33,7 @@ func (r *Router) Route() {
 	}
 	api := NewApi(&userService, r.l)
 
+	r.rg.GET("/me", api.GetMe)
 	r.rg.POST("/", api.Create)
 	r.rg.GET("/:id", api.FindById)
 	r.rg.POST("/:id", api.UpdateById)

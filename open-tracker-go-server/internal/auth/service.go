@@ -8,6 +8,7 @@ import (
 
 type Service struct {
 	UserService user.Service
+	JwtSecret   string
 }
 
 func (s *Service) Signup(dto *user.CreateDTO) (user.DTO, error) {
@@ -20,7 +21,7 @@ func (s *Service) Signup(dto *user.CreateDTO) (user.DTO, error) {
 	return s.UserService.Create(dto)
 }
 
-func (s *Service) Signing(email, password string) (SignedUser, error) {
+func (s *Service) Signing(email string, password string) (SignedUser, error) {
 	conditions := []shared.BaseFindCondition{{Field: "email", Comparator: "=", Value: email}}
 	users, err := s.UserService.Find(conditions, nil, "", 1, 0)
 	if err != nil {
@@ -32,7 +33,14 @@ func (s *Service) Signing(email, password string) (SignedUser, error) {
 	if err != nil {
 		return SignedUser{}, err
 	}
-	token, err := generateJWT(userDto.Email)
+	middleware := Middleware{JwtSecret: s.JwtSecret}
+	token, err := middleware.generateJWT(userDto)
+	if err != nil {
+		return SignedUser{}, err
+	}
+
+	m := map[string]interface{}{"token": token}
+	err = s.UserService.Repo.UpdateById(userDto.ID, m)
 	if err != nil {
 		return SignedUser{}, err
 	}

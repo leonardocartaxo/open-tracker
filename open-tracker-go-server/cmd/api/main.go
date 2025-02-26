@@ -24,6 +24,10 @@ import (
 // @description     Open source track server
 // @termsOfService  http://swagger.io/terms/
 
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 // @contact.name   API Support
 // @contact.url    http://www.swagger.io/support
 // @contact.email  support@swagger.io
@@ -89,17 +93,25 @@ func main() {
 	r.Use(logger.LogResponseMiddleware(l))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	users := r.Group("/users")
-	user.NewRouter(db, users, l).Route()
 	auths := r.Group("/auth")
-	auth.NewRouter(db, auths, l).Route()
-	organizations := r.Group("/organizations")
+
+	authRouter := auth.NewRouter(db, auths, l, c.JwtSecret)
+	authRouter.Route()
+
+	protectedGroup := r.Group("")
+	authMiddleware := auth.Middleware{JwtSecret: c.JwtSecret}
+	protectedGroup.Use(authMiddleware.Auth())
+
+	users := protectedGroup.Group("/users")
+	organizations := protectedGroup.Group("/organizations")
+	userOrganizations := protectedGroup.Group("/user_organizations")
+	trackers := protectedGroup.Group("/trackers")
+	trackerLocations := protectedGroup.Group("/tracker_locations")
+
+	user.NewRouter(db, users, l).Route()
 	organization.NewRouter(db, organizations, l).Route()
-	userOrganizations := r.Group("/user_organizations")
 	user_organizations.NewRouter(db, userOrganizations, l).Route()
-	trackers := r.Group("/trackers")
 	tracker.NewRouter(db, trackers, l).Route()
-	trackerLocations := r.Group("/tracker_locations")
 	tracker_locations.NewRouter(db, trackerLocations, l).Route()
 
 	err = r.Run(addr)
