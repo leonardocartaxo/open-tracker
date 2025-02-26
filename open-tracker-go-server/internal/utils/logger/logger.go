@@ -41,30 +41,21 @@ func LogRequestMiddleware(logger *slog.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestID, _ := c.Get(requestIDKey) // Retrieve the request_id from context
 
-		// Check if the Content-Type is JSON
-		if c.Request.Header.Get("Content-Type") == "application/json" {
-			// Read and parse the request body as JSON
-			var requestBody interface{}
-			bodyBytes, err := io.ReadAll(c.Request.Body)
-			if err != nil {
-				logger.Error("Error reading request body", requestIDKey, requestID, "error", err)
-				return
-			}
-
-			// Try to parse the body as JSON
-			if json.Unmarshal(bodyBytes, &requestBody) == nil {
-				// Log the request with the parsed JSON body
-				logger.InfoContext(context.TODO(), "Request received",
-					requestIDKey, requestID,
-					"method", c.Request.Method,
-					"path", c.Request.URL.Path,
-					"body", requestBody,
-				)
-			}
-
-			// Reassign the body back to the request so it can be read again
-			c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		bodyBytes, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			logger.Error("Error reading request body", requestIDKey, requestID, "error", err)
+			return
 		}
+
+		logger.InfoContext(context.TODO(), "Request received",
+			requestIDKey, requestID,
+			"method", c.Request.Method,
+			"path", c.Request.URL.Path,
+			"rawBody", string(bodyBytes),
+		)
+
+		// Reassign the body back to the request so it can be read again
+		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 	}
 }
 
