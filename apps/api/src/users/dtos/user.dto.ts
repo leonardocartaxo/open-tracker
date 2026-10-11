@@ -1,5 +1,6 @@
 import {UserEntity} from "../entities/user.entity.js";
 import {ApiProperty} from "@nestjs/swagger";
+import {IsEmail, IsNotEmpty} from "class-validator";
 
 export class UserDto implements Omit<UserEntity, 'hashedPassword' > {
     @ApiProperty()
@@ -17,12 +18,25 @@ export class UserDto implements Omit<UserEntity, 'hashedPassword' > {
     @ApiProperty()
     isActive: boolean;
 
-    @ApiProperty()
+    @ApiProperty({
+        default: 'john-doe@example.com',
+        nullable: false,
+    })
+    @IsNotEmpty()
+    @IsEmail()
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        default: 'John',
+        nullable: false,
+    })
+    @IsNotEmpty()
     firstName: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        default: 'Doe',
+        nullable: false,
+    })
+    @IsNotEmpty()
     lastName: string;
 }

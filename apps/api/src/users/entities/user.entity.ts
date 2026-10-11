@@ -1,6 +1,7 @@
 
 import { Entity, Column } from 'typeorm';
-import {BaseEntity} from "../../utils/entities/base.entity.js";
+import {BaseEntity} from "../../utils/base.entity.js";
+import {Exclude} from "class-transformer";
 
 @Entity()
 export class UserEntity extends BaseEntity {
@@ -8,7 +9,7 @@ export class UserEntity extends BaseEntity {
     email: string;
 
     @Column({ nullable: true })
-    // @Exclude()
+    @Exclude()
     hashedPassword: string;
 
     @Column()
