@@ -1,11 +1,12 @@
-import {Request, Controller, Get, Post, Body, HttpStatus, HttpCode} from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import {ApiOperation} from "@nestjs/swagger";
-import {SignupDto} from "./dtos/signup.dto.js";
-import {AuthResponseDto} from "./dtos/auth-response.dto.js";
-import {Public} from '@nestjs/authentication';
-import {SigningDto} from './dtos/signing.dto.js';
-import { CurrentUser } from './dtos/current-user.dto.js';
+import { Request, Controller, Get, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { Public } from '@nestjs/authentication';
+
+import { AuthService } from './auth.service';
+import { SignupDto } from './dtos/signup.dto';
+import { AuthResponseDto } from './dtos/auth-response.dto';
+import { SigningDto } from './dtos/signing.dto';
+import { CurrentUser } from './dtos/current-user.dto';
 
 @Controller('auth')
 export class AuthController {

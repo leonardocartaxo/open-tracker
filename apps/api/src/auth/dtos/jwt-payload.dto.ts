@@ -1,4 +1,4 @@
-import {CurrentUser} from './current-user.dto.js';
+import { CurrentUser } from './current-user.dto';
 
 export class JwtPayload {
 	user: CurrentUser;

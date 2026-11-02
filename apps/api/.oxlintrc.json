@@ -1,9 +1,26 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "import"],
+  "jsPlugins": ["@stylistic/eslint-plugin", "./oxlint/decorated-class-fields.mjs"],
   "rules": {
     "typescript/no-explicit-any": "off",
     "typescript/no-floating-promises": "error",
-    "import/newline-after-import": "error"
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "fix": {
+          "imports": "safe-fix"
+        }
+      }
+    ],
+    "import/newline-after-import": "error",
+    "import/extensions": ["error", "never"],
+    "@stylistic/quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": "always" }],
+    "@stylistic/max-len": ["error", { "code": 120, "tabWidth": 2 }],
+    "decorated-class-fields/newline": "error"
   },
   "env": {
     "node": true

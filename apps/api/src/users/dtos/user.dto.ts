@@ -1,10 +1,12 @@
-import {UserEntity, UserRoles} from "../entities/user.entity.js";
-import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsNotEmpty} from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
+import { UserEntity, UserRoles } from '../entities/user.entity';
 
 export class UserDto implements Omit<UserEntity, 'hashedPassword'> {
     @ApiProperty()
     id: string;
+
     @ApiProperty()
     createdAt: Date;
 

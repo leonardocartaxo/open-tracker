@@ -1,13 +1,14 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
-import {RolesAllowed} from '../auth/decorators/roles.decorator.js';
-import {RolesGuard} from '../auth/guards/roles.guard.js';
-import {UserRoles} from './entities/user.entity.js';
-import { UsersService } from './users.service.js';
-import { UserCreateDto } from './dtos/user-create.dto.js';
-import { UserUpdateDto } from './dtos/user-update.dto.js';
-import {ApiBearerAuth, ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {UserDto} from "./dtos/user.dto.js";
-import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard.js';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
+import { RolesAllowed } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserRoles } from './entities/user.entity';
+import { UsersService } from './users.service';
+import { UserCreateDto } from './dtos/user-create.dto';
+import { UserUpdateDto } from './dtos/user-update.dto';
+import { UserDto } from './dtos/user.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {

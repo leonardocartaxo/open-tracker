@@ -1,7 +1,8 @@
 
 import { Entity, Column } from 'typeorm';
-import {BaseEntity} from "../../utils/base.entity.js";
-import {Exclude} from "class-transformer";
+import { Exclude } from 'class-transformer';
+
+import { BaseEntity } from '../../utils/base.entity';
 
 export enum UserRoles {
     USER = 'USER',
