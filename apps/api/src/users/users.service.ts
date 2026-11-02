@@ -12,20 +12,30 @@ export class UsersService {
       @InjectRepository(UserEntity)
       private usersRepository: Repository<UserEntity>,
   ) {}
-  async create(UserCreateDto: UserCreateDto): Promise<UserDto> {
-    return this.usersRepository.save(UserCreateDto);
+  async create(userCreateDto: UserCreateDto): Promise<UserDto> {
+    return this.usersRepository.save(userCreateDto);
   }
 
   async findAll(): Promise<UserDto[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      }
+    });
   }
 
   async findOne(id: string): Promise<UserDto | null> {
     return this.usersRepository.findOne({ where: { id } });
   }
 
+  async findOneByEmail(email: string): Promise<UserEntity | null> {
+    return this.usersRepository.findOne({ where: { email } });
+  }
+
   async update(id: string, updateUserDto: UserUpdateDto): Promise<UserDto> {
-    return this.usersRepository.save({ ...updateUserDto, id });
+    return this.usersRepository.save(Object.assign({ id }, updateUserDto));
   }
 
   async remove(id: string): Promise<void> {

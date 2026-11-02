@@ -3,6 +3,11 @@ import { Entity, Column } from 'typeorm';
 import {BaseEntity} from "../../utils/base.entity.js";
 import {Exclude} from "class-transformer";
 
+export enum UserRoles {
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+}
+
 @Entity()
 export class UserEntity extends BaseEntity {
     @Column({ unique: true })
@@ -13,8 +18,14 @@ export class UserEntity extends BaseEntity {
     hashedPassword: string;
 
     @Column()
-    firstName: string;
+    name: string;
 
-    @Column()
-    lastName: string;
+    @Column({
+        array: true,
+        type: 'enum',
+        enum: Object.values(UserRoles),
+        default: [UserRoles.USER],
+        comment: 'enum:{USER, ADMIN}',
+    })
+    roles: UserRoles[] = [UserRoles.USER];
 }
