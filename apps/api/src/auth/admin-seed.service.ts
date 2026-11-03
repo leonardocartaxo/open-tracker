@@ -32,7 +32,7 @@ export class AdminSeedService implements OnModuleInit {
       email,
       name,
       hashedPassword: await this.passwordHasher.hash(password),
-      roles: [UserRoles.ADMIN],
+      roles: [UserRoles.ADMIN, UserRoles.USER],
     });
     this.logger.log(`Created admin user ${email}`);
   }

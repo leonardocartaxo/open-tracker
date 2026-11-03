@@ -21,8 +21,13 @@ export class UsersService {
     return this.usersRepository.find({
       select: {
         id: true,
+        createdAt: true,
+        updatedAt: true,
+        isActive: true,
+        deletedAt: true,
         name: true,
         email: true,
+        roles: true,
       }
     });
   }

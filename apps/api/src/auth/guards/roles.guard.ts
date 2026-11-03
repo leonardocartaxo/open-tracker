@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 import { UserRoles } from '../../users/entities/user.entity';
+import {CurrentUser} from '../dtos/current-user.dto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -18,9 +19,9 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-
+    const user: CurrentUser = request?.user
     const allRoles = [...methodRoles, ...classRoles];
 
-    return allRoles?.every((it) => request?.user?.systemRoles?.includes(it));
+    return allRoles?.every((it) => user?.roles?.includes(it));
   }
 }

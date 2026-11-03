@@ -3,6 +3,8 @@ import { PasswordHasher } from '@nestjs/authentication';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserRoles } from '../users/entities/user.entity';
+import { CurrentUser } from './dtos/current-user.dto';
+import { JwtPayload } from './dtos/jwt-payload.dto';
 import { SigningDto } from './dtos/signing.dto';
 import { SignupDto } from './dtos/signup.dto';
 import { AuthResponseDto } from './dtos/auth-response.dto';
@@ -48,14 +50,16 @@ export class AuthService {
     if(!isMatch) {
       throw new UnauthorizedException('Invalid email or password');
     }
+    const currentUser: CurrentUser = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      roles: user.roles,
+    };
+    const jwtPayload: JwtPayload = { user: currentUser };
     return {
-      bearerToken: await this.jwtService.signAsync({ id: user.id, email: user.email }),
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        roles: user.roles,
-      }
+      bearerToken: await this.jwtService.signAsync(jwtPayload),
+      user: currentUser,
     };
   }
 }
