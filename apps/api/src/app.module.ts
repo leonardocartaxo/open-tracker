@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
+import { CompaniesModule } from './companies/companies.module';
 import { HealthController } from './health/health.controller';
 import { UsersModule } from './users/users.module';
 
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     AuthModule,
+    CompaniesModule,
   ],
   controllers: [HealthController],
 })

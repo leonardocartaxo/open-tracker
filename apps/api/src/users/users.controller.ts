@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { RolesAllowed } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { UserRoles } from './entities/user.entity';
-import { UsersService } from './users.service';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserDto } from './dtos/user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserRoles } from './entities/user.entity';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {

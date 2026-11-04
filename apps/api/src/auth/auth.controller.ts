@@ -1,15 +1,15 @@
-import {Request, Controller, Get, Post, Body, HttpStatus, HttpCode, UseGuards} from '@nestjs/common';
-import {ApiBearerAuth, ApiOperation} from '@nestjs/swagger';
 import { Public } from '@nestjs/authentication';
-import {UserRoles} from '../users/entities/user.entity';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
+import { UserRoles } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
-import {RolesAllowed} from './decorators/roles.decorator';
-import { SignupDto } from './dtos/signup.dto';
+import { RolesAllowed } from './decorators/roles.decorator';
 import { AuthResponseDto } from './dtos/auth-response.dto';
-import { SigningDto } from './dtos/signing.dto';
 import { CurrentUser } from './dtos/current-user.dto';
-import {JwtAuthGuard} from './guards/jwt-auth.guard';
+import { SigningDto } from './dtos/signing.dto';
+import { SignupDto } from './dtos/signup.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {

@@ -1,9 +1,9 @@
+import { PasswordHasher } from '@nestjs/authentication';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PasswordHasher } from '@nestjs/authentication';
 
-import { UsersService } from '../users/users.service';
 import { UserRoles } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AdminSeedService implements OnModuleInit {

@@ -20,6 +20,8 @@
     "import/extensions": ["error", "never"],
     "@stylistic/quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": "always" }],
     "@stylistic/max-len": ["error", { "code": 120, "tabWidth": 2 }],
+    "@stylistic/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": false }],
+    "@stylistic/padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "return" }],
     "decorated-class-fields/newline": "error"
   },
   "env": {

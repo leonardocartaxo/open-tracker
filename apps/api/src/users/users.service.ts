@@ -10,9 +10,10 @@ import { UserEntity } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   constructor(
-      @InjectRepository(UserEntity)
-      private usersRepository: Repository<UserEntity>,
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
   ) {}
+
   async create(userCreateDto: UserCreateDto): Promise<UserDto> {
     return this.usersRepository.save(userCreateDto);
   }
@@ -28,7 +29,7 @@ export class UsersService {
         name: true,
         email: true,
         roles: true,
-      }
+      },
     });
   }
 
@@ -40,8 +41,10 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { email } });
   }
 
-  async update(id: string, updateUserDto: UserUpdateDto): Promise<UserDto> {
-    return this.usersRepository.save(Object.assign({ id }, updateUserDto));
+  async update(id: string, updateUserDto: UserUpdateDto): Promise<UserDto | null> {
+    await this.usersRepository.save(Object.assign({ id }, updateUserDto));
+
+    return this.findOne(id);
   }
 
   async remove(id: string): Promise<void> {

@@ -1,21 +1,21 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PasswordHasher } from '@nestjs/authentication';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserRoles } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { AuthResponseDto } from './dtos/auth-response.dto';
 import { CurrentUser } from './dtos/current-user.dto';
 import { JwtPayload } from './dtos/jwt-payload.dto';
 import { SigningDto } from './dtos/signing.dto';
 import { SignupDto } from './dtos/signup.dto';
-import { AuthResponseDto } from './dtos/auth-response.dto';
-import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-      private readonly passwordHasher: PasswordHasher,
-      private readonly jwtService: JwtService,
-      private readonly usersService: UsersService,
+    private readonly passwordHasher: PasswordHasher,
+    private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
   ) {}
 
   async hashPassword(password: string): Promise<string> {
@@ -32,22 +32,23 @@ export class AuthService {
       email: signupDto.email,
       name: signupDto.name,
       hashedPassword,
-      roles: [UserRoles.USER]
+      roles: [UserRoles.USER],
     });
 
     return await this.signIn({
       email: signupDto.email,
-      password: signupDto.password
+      password: signupDto.password,
     });
   }
 
   async signIn(signingDto: SigningDto): Promise<AuthResponseDto> {
     const user = await this.usersService.findOneByEmail(signingDto.email);
-    if(!user) {
+
+    if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
     const isMatch = await this.checkPassword(signingDto.password, user.hashedPassword);
-    if(!isMatch) {
+    if (!isMatch) {
       throw new UnauthorizedException('Invalid email or password');
     }
     const currentUser: CurrentUser = {
@@ -57,6 +58,7 @@ export class AuthService {
       roles: user.roles,
     };
     const jwtPayload: JwtPayload = { user: currentUser };
+
     return {
       bearerToken: await this.jwtService.signAsync(jwtPayload),
       user: currentUser,
