@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
 import { UserEntity } from '../../users/entities/user.entity';
 import { BaseEntity } from '../../utils/base.entity';
@@ -10,6 +10,7 @@ export enum CompanyMemberRole {
   VIEWER = 'VIEWER',
 }
 
+@Unique(['userId', 'companyId'])
 @Entity('companyMembers')
 export class CompanyMemberEntity extends BaseEntity {
   @Column()
