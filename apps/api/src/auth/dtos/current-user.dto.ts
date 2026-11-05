@@ -13,5 +13,5 @@ export class CurrentUser {
   name: string;
 
   @ApiProperty()
-  roles: UserRoles[];
+  role: UserRoles;
 }

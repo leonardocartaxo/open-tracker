@@ -28,7 +28,7 @@ export class UsersService {
         deletedAt: true,
         name: true,
         email: true,
-        roles: true,
+        role: true,
       },
     });
   }

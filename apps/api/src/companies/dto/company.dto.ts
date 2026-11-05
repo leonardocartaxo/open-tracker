@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 import { CompanyEntity } from '../entities/company.entity';
+import { CompanyMemberDto } from './company-member.dto';
 
 export class CompanyDto implements CompanyEntity {
   @ApiProperty()
@@ -25,4 +26,7 @@ export class CompanyDto implements CompanyEntity {
   })
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty()
+  companyMembers: CompanyMemberDto[];
 }

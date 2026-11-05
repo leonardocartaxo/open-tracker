@@ -26,7 +26,10 @@ export class CompanyMemberDto implements CompanyMemberEntity {
   @ApiProperty()
   companyId: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: CompanyMemberRole.VIEWER,
+    nullable: false,
+  })
   role: CompanyMemberRole;
 
   @ApiProperty()

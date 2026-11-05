@@ -8,4 +8,6 @@ export class CompanyMemberCreateDto extends OmitType(CompanyMemberDto, [
   'updatedAt',
   'deletedAt',
   'isActive',
+  'company',
+  'user',
 ] as const) {}

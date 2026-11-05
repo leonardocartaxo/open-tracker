@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
+import { CompanyMemberEntity } from '../../companies/entities/company-member.entity';
 import { BaseEntity } from '../../utils/base.entity';
 
 export enum UserRoles {
@@ -8,7 +9,7 @@ export enum UserRoles {
   ADMIN = 'ADMIN',
 }
 
-@Entity()
+@Entity('users')
 export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
@@ -21,11 +22,13 @@ export class UserEntity extends BaseEntity {
   name: string;
 
   @Column({
-    array: true,
     type: 'enum',
     enum: Object.values(UserRoles),
-    default: [UserRoles.USER],
+    default: UserRoles.USER,
     comment: 'enum:{USER, ADMIN}',
   })
-  roles: UserRoles[] = [UserRoles.USER];
+  role: UserRoles = UserRoles.USER;
+
+  @OneToMany(() => CompanyMemberEntity, (companyMemberEntity) => companyMemberEntity.user)
+  companyMembers: CompanyMemberEntity[];
 }
