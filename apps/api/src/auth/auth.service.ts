@@ -2,7 +2,9 @@ import { PasswordHasher } from '@nestjs/authentication';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserRoles } from '../users/entities/user.entity';
+import { CompanyMemberDto } from '../companies/dto/company-member.dto';
+import { CompanyMemberEntity } from '../companies/entities/company-member.entity';
+import { UserEntity, UserRoles } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthResponseDto } from './dtos/auth-response.dto';
 import { CurrentUser } from './dtos/current-user.dto';
@@ -52,13 +54,7 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    const currentUser: CurrentUser = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      companyMembers: user.companyMembers,
-    };
+    const currentUser = toCurrentUser(user);
     const jwtPayload: JwtPayload = { user: currentUser };
 
     return {
@@ -66,4 +62,27 @@ export class AuthService {
       user: currentUser,
     };
   }
+}
+
+function toCurrentUser(user: UserEntity): CurrentUser {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    companyMembers: (user.companyMembers ?? []).map(toTokenCompanyMember),
+  };
+}
+
+function toTokenCompanyMember(member: CompanyMemberEntity): CompanyMemberDto {
+  return {
+    id: member.id,
+    createdAt: member.createdAt,
+    updatedAt: member.updatedAt,
+    deletedAt: member.deletedAt,
+    isActive: member.isActive,
+    companyId: member.companyId,
+    userId: member.userId,
+    role: member.role,
+  } as CompanyMemberDto;
 }

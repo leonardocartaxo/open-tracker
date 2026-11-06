@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
+import { enumColumnType } from '../../database/column-types';
 import { UserEntity } from '../../users/entities/user.entity';
 import { BaseEntity } from '../../utils/base.entity';
 import { CompanyEntity } from './company.entity';
@@ -10,8 +11,8 @@ export enum CompanyMemberRole {
   VIEWER = 'VIEWER',
 }
 
-@Unique(['userId', 'companyId'])
 @Entity('companyMembers')
+@Unique(['userId', 'companyId'])
 export class CompanyMemberEntity extends BaseEntity {
   @Column()
   companyId: string;
@@ -29,7 +30,7 @@ export class CompanyMemberEntity extends BaseEntity {
 
   @Column({
     default: CompanyMemberRole.VIEWER,
-    type: 'enum',
+    type: enumColumnType,
     enum: CompanyMemberRole,
     comment: 'enum: { OWNER, MANAGER, VIEWER }',
   })

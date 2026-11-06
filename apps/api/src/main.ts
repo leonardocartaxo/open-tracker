@@ -1,28 +1,14 @@
-import {
-  BadRequestException,
-  ClassSerializerInterceptor,
-  Logger,
-  ValidationError,
-  ValidationPipe,
-} from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { configureApp } from './configure-app';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
-
-  // Enable class serialization globally
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.useGlobalPipes(
-    new ValidationPipe({
-      exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        return new BadRequestException(validationErrors);
-      },
-    }),
-  );
+  configureApp(app);
 
   const config = new DocumentBuilder()
     .setTitle('Open Tracker API')

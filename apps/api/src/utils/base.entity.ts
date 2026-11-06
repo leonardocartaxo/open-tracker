@@ -1,16 +1,18 @@
 import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
+import { dateColumnType } from '../database/column-types';
+
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: null })
+  @CreateDateColumn({ type: dateColumnType, default: null })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', default: null })
+  @UpdateDateColumn({ type: dateColumnType, default: null })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamptz', default: null })
+  @DeleteDateColumn({ type: dateColumnType, default: null })
   deletedAt: Date | null;
 
   @Column('boolean', { default: true })

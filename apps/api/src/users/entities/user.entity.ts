@@ -1,7 +1,8 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 
 import { CompanyMemberEntity } from '../../companies/entities/company-member.entity';
+import { enumColumnType } from '../../database/column-types';
 import { BaseEntity } from '../../utils/base.entity';
 
 export enum UserRoles {
@@ -10,6 +11,7 @@ export enum UserRoles {
 }
 
 @Entity('users')
+@Unique(['email'])
 export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
@@ -22,7 +24,7 @@ export class UserEntity extends BaseEntity {
   name: string;
 
   @Column({
-    type: 'enum',
+    type: enumColumnType,
     enum: Object.values(UserRoles),
     default: UserRoles.USER,
     comment: 'enum:{USER, ADMIN}',
