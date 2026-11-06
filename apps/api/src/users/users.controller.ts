@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { RolesAllowed } from '../auth/decorators/roles.decorator';
+import { UserRolesAllowed } from '../auth/decorators/user-roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserRoleGuard } from '../auth/guards/user-role.guard';
 import { UserCreateDto } from './dtos/user-create.dto';
 import { UserUpdateDto } from './dtos/user-update.dto';
 import { UserDto } from './dtos/user.dto';
@@ -20,8 +20,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   create(@Body() createUserDto: UserCreateDto): Promise<UserDto> {
     return this.usersService.create(createUserDto);
   }
@@ -32,8 +32,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findAll(): Promise<UserDto[]> {
     return this.usersService.findAll();
   }
@@ -44,8 +44,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.USER)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
@@ -56,8 +56,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   update(@Param('id') id: string, @Body() updateUserDto: UserUpdateDto) {
     return this.usersService.update(id, updateUserDto);
   }
@@ -68,8 +68,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }

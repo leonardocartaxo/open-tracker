@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { RolesAllowed } from '../auth/decorators/roles.decorator';
+import { UserRolesAllowed } from '../auth/decorators/user-roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserRoleGuard } from '../auth/guards/user-role.guard';
 import { UserRoles } from '../users/entities/user.entity';
 import { CompaniesService } from './companies.service';
 import { CompanyCreateDto } from './dto/company-create.dto';
@@ -19,8 +19,8 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   create(@Body() createCompanyDto: CompanyCreateDto) {
     return this.companiesService.create(createCompanyDto);
   }
@@ -31,8 +31,8 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findAll() {
     return this.companiesService.findAll();
   }
@@ -43,8 +43,8 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findOne(@Param('id') id: string) {
     return this.companiesService.findOne(id);
   }
@@ -55,8 +55,8 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   update(@Param('id') id: string, @Body() updateCompanyDto: CompanyUpdateDto) {
     return this.companiesService.update(id, updateCompanyDto);
   }
@@ -67,8 +67,8 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   remove(@Param('id') id: string) {
     return this.companiesService.remove(id);
   }

@@ -1,13 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { RolesAllowed } from '../auth/decorators/roles.decorator';
+import { CompanyRolesAllowed } from '../auth/decorators/company-roles.decorator';
+import { UserRolesAllowed } from '../auth/decorators/user-roles.decorator';
+import { CompanyRoleGuard } from '../auth/guards/company-role.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserRoleGuard } from '../auth/guards/user-role.guard';
 import { UserRoles } from '../users/entities/user.entity';
 import { CompanyMembersService } from './company-members.service';
 import { CompanyMemberCreateDto } from './dto/company-member-create.dto';
 import { CompanyMemberUpdateDto } from './dto/company-member-update.dto';
+import { CompanyMemberRole } from './entities/company-member.entity';
 
 @Controller('company-members')
 export class CompanyMemberController {
@@ -19,8 +22,9 @@ export class CompanyMemberController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @CompanyRolesAllowed(CompanyMemberRole.MANAGER)
+  @UseGuards(JwtAuthGuard, CompanyRoleGuard)
   create(@Body() companyMemberCreateDto: CompanyMemberCreateDto) {
     return this.companyMembersService.create(companyMemberCreateDto);
   }
@@ -31,8 +35,8 @@ export class CompanyMemberController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findAll() {
     return this.companyMembersService.findAll();
   }
@@ -43,8 +47,8 @@ export class CompanyMemberController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   findOne(@Param('id') id: string) {
     return this.companyMembersService.findOne(id);
   }
@@ -55,8 +59,8 @@ export class CompanyMemberController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   update(@Param('id') id: string, @Body() companyMemberUpdateDto: CompanyMemberUpdateDto) {
     return this.companyMembersService.update(id, companyMemberUpdateDto);
   }
@@ -67,8 +71,8 @@ export class CompanyMemberController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @RolesAllowed(UserRoles.ADMIN)
+  @UserRolesAllowed(UserRoles.ADMIN)
+  @UseGuards(JwtAuthGuard, UserRoleGuard)
   remove(@Param('id') id: string) {
     return this.companyMembersService.remove(id);
   }

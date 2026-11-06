@@ -1,0 +1,135 @@
+### Admin sign in
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin"
+}
+
+> {%
+    const body = typeof response.body === "string" ? JSON.parse(response.body) : response.body;
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Admin sign in failed with status ${response.status}`);
+    }
+    client.global.set("adminToken", body.bearerToken);
+%}
+
+### Get admin profile
+GET {{baseUrl}}/auth/profile
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+> {%
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Get admin profile failed with status ${response.status}`);
+    }
+%}
+
+### Create user 1
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "email": "user1@example.com",
+  "name": "User 1",
+  "password": "user1pass",
+  "passwordConfirm": "user1pass"
+}
+
+> {%
+    const body = typeof response.body === "string" ? JSON.parse(response.body) : response.body;
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Create user 1 failed with status ${response.status}`);
+    }
+    client.global.set("user1Id", body.user?.id || body.id);
+%}
+
+### Create user 2
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "email": "user2@example.com",
+  "name": "User 2",
+  "password": "user2pass",
+  "passwordConfirm": "user2pass"
+}
+
+> {%
+    const body = typeof response.body === "string" ? JSON.parse(response.body) : response.body;
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Create user 2 failed with status ${response.status}`);
+    }
+    client.global.set("user2Id", body.user?.id || body.id);
+%}
+
+### Create company
+POST {{baseUrl}}/companies
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Test Company"
+}
+
+> {%
+    const body = typeof response.body === "string" ? JSON.parse(response.body) : response.body;
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Create company failed with status ${response.status}`);
+    }
+    client.global.set("companyId", body.id);
+%}
+
+### Admin creates company member (user1 as MANAGER)
+POST {{baseUrl}}/company-members
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "companyId": "{{companyId}}",
+  "userId": "{{user1Id}}",
+  "role": "MANAGER"
+}
+
+> {%
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Create company member (MANAGER) failed with status ${response.status}`);
+    }
+%}
+
+### User 1 sign in
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "user1@example.com",
+  "password": "user1pass"
+}
+
+> {%
+    const body = typeof response.body === "string" ? JSON.parse(response.body) : response.body;
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`User 1 sign in failed with status ${response.status}`);
+    }
+    client.global.set("user1Token", body.bearerToken);
+%}
+
+### User 1 creates company member (user2 as VIEWER)
+POST {{baseUrl}}/company-members
+Content-Type: application/json
+Authorization: Bearer {{user1Token}}
+
+{
+  "companyId": "{{companyId}}",
+  "userId": "{{user2Id}}",
+  "role": "VIEWER"
+}
+
+> {%
+    if (![200, 201].includes(response.status)) {
+        throw new Error(`Create company member (VIEWER) failed with status ${response.status}`);
+    }
+%}

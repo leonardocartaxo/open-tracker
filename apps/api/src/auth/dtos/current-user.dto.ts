@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { CompanyMemberDto } from '../../companies/dto/company-member.dto';
 import { UserRoles } from '../../users/entities/user.entity';
 
 export class CurrentUser {
@@ -14,4 +15,7 @@ export class CurrentUser {
 
   @ApiProperty()
   role: UserRoles;
+
+  @ApiProperty()
+  companyMembers: CompanyMemberDto[];
 }

@@ -2,9 +2,7 @@ import { Public } from '@nestjs/authentication';
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
-import { UserRoles } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
-import { RolesAllowed } from './decorators/roles.decorator';
 import { AuthResponseDto } from './dtos/auth-response.dto';
 import { CurrentUser } from './dtos/current-user.dto';
 import { SigningDto } from './dtos/signing.dto';
@@ -35,7 +33,6 @@ export class AuthController {
   @ApiOperation({ summary: 'Get user profile' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @RolesAllowed(UserRoles.USER)
   getProfile(@Request() req: any): Promise<CurrentUser> {
     return req.user;
   }

@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   async signIn(signingDto: SigningDto): Promise<AuthResponseDto> {
-    const user = await this.usersService.findOneByEmail(signingDto.email);
+    const user = await this.usersService.findOneByEmail(signingDto.email, { companyMembers: true });
 
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
@@ -57,6 +57,7 @@ export class AuthService {
       email: user.email,
       name: user.name,
       role: user.role,
+      companyMembers: user.companyMembers,
     };
     const jwtPayload: JwtPayload = { user: currentUser };
 
